@@ -1,8 +1,8 @@
 # 12 SQL: Employee Tracker
 
-Developers frequently have to create interfaces that allow non-developers to easily view and interact with information stored in databases. These interfaces are called **content management systems (CMS)**. Your assignment this week is to build a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL.
+EmployeeTracker is an command-line application to manage a company's employee database. The app uses Node.js, Inquirer, and MySQL. As the app is not deployed, a link to a walkthrough video is provided at the end of this README. /The github repository for the app is found here: https://github.com/mcleanGit/StaffTrack.
 
-Because this application won’t be deployed, you’ll also need to create a walkthrough video that demonstrates its functionality and all of the following acceptance criteria being met. You’ll need to submit a link to the video and add it to the README of your project.
+This is the background User Story the app addresses:
 
 ## User Story
 
@@ -36,23 +36,24 @@ WHEN I choose to update an employee role
 
 ## Mock-Up
 
-The following video shows an example of the application being used from the command line:
+The following video shows an example of the requisite application being used from the command line:
 
-[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./Assets/12-sql-homework-video-thumbnail.png)](https://2u-20.wistia.com/medias/2lnle7xnpk)
+[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./Assets/12-sql-homework-video-thumbnail.png)]
+Link to the video version: (https://2u-20.wistia.com/medias/2lnle7xnpk)
 
 ## Getting Started
 
-You’ll need to use the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to your MySQL database and perform queries, the [Inquirer package](https://www.npmjs.com/package/inquirer) to interact with the user via the command line, and the [console.table package](https://www.npmjs.com/package/console.table) to print MySQL rows to the console.
+The app uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to the MySQL database and perform queries, the [Inquirer package](https://www.npmjs.com/package/inquirer) to interact with the user via the command line, and the [console.table package](https://www.npmjs.com/package/console.table) to print MySQL rows to the console.
 
-**Important**: You will be committing a file that contains your database credentials. Make sure that your MySQL password is not used for any other personal accounts, because it will be visible on GitHub. In upcoming lessons, you will learn how to better secure this password, or you can start researching npm packages now that could help you.
+**Important**: Comments were provided on password security issues issues with the potential GitHub exposure of the MySQL password. Suggest changing to root and blank or some default form like "1234". See docs.]
 
-You might also want to make your queries asynchronous. MySQL2 exposes a `.promise()` function on Connections to upgrade an existing non-Promise connection to use Promises. To learn more and make your queries asynchronous, refer to the [npm documentation on MySQL2](https://www.npmjs.com/package/mysql2).
+Making queries asynchronous: MySQL2 exposes a `.promise()` function on Connections to upgrade an existing non-Promise connection to use Promises. See the [npm documentation on MySQL2](https://www.npmjs.com/package/mysql2).
 
-Design the database schema as shown in the following image:
+The database schema is shown in the following image:
 
 ![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/12-sql-homework-demo-01.png)
 
-As the image illustrates, your schema should contain the following three tables:
+The overall schema contains the following three tables:
 
 * `department`
 
@@ -82,11 +83,14 @@ As the image illustrates, your schema should contain the following three tables:
 
   * `manager_id`: `INT` to hold reference to another employee that is the manager of the current employee (`null` if the employee has no manager)
 
-You might want to use a separate file that contains functions for performing specific SQL queries you'll need to use. A constructor function or class could be helpful for organizing these. You might also want to include a `seeds.sql` file to pre-populate your database, making the development of individual features much easier.
+Suggestions to consider: 
+You might want to use a separate file that contains functions for performing specific SQL queries you'll need to use. A *constructor function* or *class* could be helpful for organizing these. 
+
+You might also want to include a `seeds.sql` file to pre-populate your database, making the development of individual features much easier.
 
 ## Bonus
 
-Try to add some additional functionality to your application, such as the ability to do the following:
+To consider: Try to add some additional functionality to your application, such as the ability to do the following:
 
 * Update employee managers.
 
@@ -100,14 +104,16 @@ Try to add some additional functionality to your application, such as the abilit
 
 ## Review
 
-You are required to submit BOTH of the following for review:
+The following items are submitted for review:
 
 * A walkthrough video demonstrating the functionality of the application.
-Link to video walkthrough in README:
-
+  Link to video walkthrough in README:
+  vimeo tbd.
 
 * The URL of the GitHub repository, with a unique name and a README describing the project.
-Link to GitHug repo:  
+  Link to GitHug repo:  
+  https://github.com/mcleanGit/StaffTrack
+
 
 - - -
 © 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.

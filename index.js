@@ -1,56 +1,61 @@
 // index.js main index for EmployeeTracker app
-const mysql = require('mysql2');
 const inquirer = require('inquirer');
-const cTable = require('console.table');
-// const express = require('express');
-// const app = express();
+const mysql = require('mysql2');
+require('console.table');
+const db = require('./db');
+require('connection');
 
-// create the connection to *database*
-const connection = mysql.createConnection({
-  host: 'localhost',
-  port: '3001',
-  user: 'root',
-  password: '',
-  database: 'employee_trackerDB'
-})
-
-connection.connect(function (err) {
-//  if (err) throw err;
- console.log("connection made!");
- initialPrompt();
-});
-
-// insert start function here...
+// start function here...
 function initialPrompt() {
-
-inquirer.prompt([
+prompt([
   {
     type: 'list',
     name: 'userSelection',
     message: 'Please select a choice using arrow keys',
-    choices: [ // are all choices represented here ?
-      'view all departments',
-      'view all roles',
-      'view all employees',
-      'add a department',
-      'add role',
-      'add an employee',
-      'update an employee role',
-      'remove an employee',
-      'exit'  // need exit strategy connection.end()
+    choices: [ // are all choices represented here ? no, some joins later
+      
+      { name: 'view all departments',
+        value: 'VIEW_DEPARTMENTS' // SQL calls
+      },
+      { name: 'view all roles',
+        value: 'VIEW_ROLES' // SQL calls
+      },
+      { name: 'view all employees',
+        value: 'VIEW_EMPLOYEES' // SQL calls
+      },
+      { name: 'add a department',
+        value: 'ADD_DEPARTMENT' // SQL calls
+      },
+      { name: 'add a role',
+        value: 'ADD_ROLE' // SQL calls
+      },
+      { name: 'add an employee',
+        value: 'ADD_EMPLOYEE' // SQL calls
+      },
+      { name: 'update an employee role',
+        value: 'UPDATE_ROLE' // SQL calls
+      },
+      { name: 'remove an employee',
+        value: 'DELETE_EMPLOYEE' // SQL calls
+      },
+      {
+        name: 'exit',
+        value: 'quit'
+      }
     ]
   }
 ]).then((res) => {
   console.log(res.userSelection);
+  // userSelection choices trigger functions -- still to set up
   switch(res.userSelection) {
     case 'view all departments':
-      viewAllDepartments();
+      viewDepartments();
       break;
     case 'view all roles':
-      viewAllRoles();
+      viewRoles();
       break;
     case 'view all employees':
-      viewAllEmployees();
+      viewEmployees();
       break;
     case 'add a department':
       addDepartment();
@@ -67,9 +72,28 @@ inquirer.prompt([
     case 'remove an employee':
       removeEmployee();
       break;
-    case 'exit':
-      connection.end();
-      break;
+    // case 'exit':
+    //  connection.end();
+     // break;
+     default: 
+      process.exit();
   }
 });
 }
+
+// functions res to userSelection...
+  viewDepartments();
+      
+  viewRoles();
+    
+  viewEmployees();
+
+  addDepartment();
+
+  addRole();
+    
+  addEmployee();
+  
+  updateRole();
+      
+  removeEmployee();

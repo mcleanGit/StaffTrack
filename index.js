@@ -2,12 +2,11 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 require('console.table');
-const db = require('./db');
-require('connection');
+const connection = require('./db/connection');
 
 // start function here...
 function initialPrompt() {
-prompt([
+inquirer.prompt([
   {
     type: 'list',
     name: 'userSelection',
@@ -15,7 +14,7 @@ prompt([
     choices: [ // are all choices represented here ? no, some joins later
       
       { name: 'view all departments',
-        value: 'VIEW_DEPARTMENTS' // SQL calls
+        value: 'VIEW_DEPARTMENTS' // SQL calls ?? here?
       },
       { name: 'view all roles',
         value: 'VIEW_ROLES' // SQL calls
@@ -44,6 +43,10 @@ prompt([
       }
     ]
   }
+])
+}
+
+/*
 ]).then((res) => {
   console.log(res.userSelection);
   // userSelection choices trigger functions -- still to set up
@@ -81,6 +84,8 @@ prompt([
 });
 }
 
+//module.imports = connection;
+/*
 // functions res to userSelection...
   viewDepartments();
       
@@ -97,3 +102,6 @@ prompt([
   updateRole();
       
   removeEmployee();
+
+  modules.import = connection;
+*/

@@ -6,12 +6,13 @@ const connection = mysql.createConnection({
  port: '3001',
  user: 'root',
  password: '',
- database: 'employee_trackerDB'
+ database: 'employeeTracker_db'
 })
 
 connection.connect(function (err) {
-  console.log("connection made!");
-initialPrompt();
+ // if (err) throw err;
+  console.log("connection made!");  // works to here
+  initialPrompt();
 });
 
 module.exports = connection;

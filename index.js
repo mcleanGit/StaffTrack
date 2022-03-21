@@ -2,11 +2,11 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 require('console.table');
-const connection = require('./db/connection');
+require('connection');
 
 // start function here...
 function initialPrompt() {
-inquirer.prompt([
+  inquirer.prompt([
   {
     type: 'list',
     name: 'userSelection',
@@ -34,19 +34,16 @@ inquirer.prompt([
       { name: 'update an employee role',
         value: 'UPDATE_ROLE' // SQL calls
       },
-      { name: 'remove an employee',
-        value: 'DELETE_EMPLOYEE' // SQL calls
-      },
+  //    { name: 'remove an employee',
+  //      value: 'DELETE_EMPLOYEE' // SQL calls
+  //    },  // not required
       {
         name: 'exit',
         value: 'quit'
       }
     ]
   }
-])
-}
 
-/*
 ]).then((res) => {
   console.log(res.userSelection);
   // userSelection choices trigger functions -- still to set up
@@ -72,9 +69,9 @@ inquirer.prompt([
     case 'update an employee role':
       updateRole();
       break;
-    case 'remove an employee':
-      removeEmployee();
-      break;
+//    case 'remove an employee':  // this not required
+ //     removeEmployee();
+ //     break;
     // case 'exit':
     //  connection.end();
      // break;
@@ -84,24 +81,181 @@ inquirer.prompt([
 });
 }
 
-//module.imports = connection;
-/*
 // functions res to userSelection...
-  viewDepartments();
-      
-  viewRoles();
-    
-  viewEmployees();
+  function viewDepartments() {
+    let query = `SELECT
+      department.id
+      department.name
+    FROM departments`
 
-  addDepartment();
+    connection.query(query, res.departments, (err, res) => {
+      if (err) throw err;
+      console.table(
+        [
+        department.id,
+        department.name
+        ]);
+      initialPrompt();
+    })
+  }
 
-  addRole();
+  function viewRoles() {
+    let query = `SELECT
+      role.id
+      role.title
+      role.department
+      role.salary
+    FROM employees`
+
+    connection.query(query, res.roles, (err, res) => {
+      if (err) throw err;
+      console.table([
+        role.id,
+        role.title,
+        role.department,
+        role.salary
+      ]);
+      initialPrompt();
+    })
+  }
     
-  addEmployee();
+  function viewEmployees() {
+    let query = `SELECT
+      employee.id,
+      employee.first_name,
+      employee.last_name,
+      employee.role,
+      employee.department,
+      employee.salary,
+      employee.manager
+    FROM employees`
   
-  updateRole();
-      
-  removeEmployee();
+    connection.query(query, res.employees, (err, res) => {
+      if (err) throw err;
+      console.table(
+        [
+        employee.id,
+        employee.first_name,
+        employee.last_name,
+        employee.role,
+        employee.department,
+        employee.salary,
+        employee.manager
+        ]); 
+      initialPrompt();
+    });
+  }
+    
+  function addDepartment() {
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "name",
+          message: "Department Name: " 
+        }   
+      ]).then((res) => {
+        let query = `INSERT INTO departments SET ?`;
+          if (err) throw (err);
+          console.table([department.name]);
+          initialPrompt();
 
-  modules.import = connection;
-*/
+          connection.query(query, res.department, (err, res) => {
+            if (err) throw err;
+            console.table([
+              role.id,
+              role.title,
+              role.department,
+              role.salary
+            ]);
+        })
+      }
+    }
+
+    function addRole() {
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "title",
+          message: "title of added role: "
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "salary of added role: "
+        },
+        {
+          type: "input",
+          name: "department",
+          message: "department of the added role: "
+        }
+      ]).then((res) => {
+        let query = `INSERT INTO roles SET ?`;
+          if (err) throw (err);
+          console.table(
+          [
+            role.title, role.title, role.department
+          ]);
+          initialPrompt();
+      })
+    }
+
+    function addEmployee() {
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "first_name",
+          message: "first_name of added employee: "
+        },
+        {
+          type: "input",
+          name: "last_name",
+          message: "last_name of added employee: "
+        },
+        {
+          type: "input",
+          name: "role",
+          message: "employee's role: "
+        },
+        {
+          type: "input",
+          name: "manager",
+          message: "name of this employee's manager: "
+        }
+        ]).then((res) => {
+          let query = `INSERT INTO employees SET ?`;
+            if (err) throw (err);
+            console.table(
+              [
+                employee.first_name,
+                employee.last_name,
+                employee.role,
+                employee.manager
+              ]);
+            initialPrompt();
+        })
+      }
+
+      function updateRole() {
+        inquirer.prompt ([
+          {
+            type: number,
+            name: "employee_id",
+            message: "select employee_id for role update:  "
+          },
+          {
+            type: "input",
+            name: "name",
+            message: "employee's new role: "
+          },
+        ]).then((res) => {
+          let query = `INSERT INTO employees SET id ?`;
+            if (err) throw (err);
+            console.table(
+              [
+                employee.id,
+                employee.newRole,
+              ]);
+          initialPrompt();
+      });
+    }     
+// removeEmployee(); not required

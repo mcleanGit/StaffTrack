@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 require('console.table');
-marequire('./db/connection');
+require('./db/connection');
 
 // start function here...
 function initialPrompt() {

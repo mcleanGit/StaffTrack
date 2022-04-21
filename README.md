@@ -1,6 +1,6 @@
 # 12 SQL: Employee Tracker
 
-EmployeeTracker is an command-line application to manage a company's employee database. The app uses Node.js, Inquirer, and MySQL. As the app is not deployed, a link to a walkthrough video is provided at the end of this README. /The github repository for the app is found here: https://github.com/mcleanGit/StaffTrack.
+EmployeeTracker is an command-line application to manage a company's employee database. The app uses Node.js, Inquirer, and MySQL. As the app is not deployed, a link to a walkthrough video is provided at the end of this README. The github repository for the app is found here: https://github.com/mcleanGit/StaffTrack.
 
 This is the background User Story the app addresses:
 
@@ -45,7 +45,7 @@ Link to the video version: (https://2u-20.wistia.com/medias/2lnle7xnpk)
 
 The app uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to the MySQL database and perform queries, the [Inquirer package](https://www.npmjs.com/package/inquirer) to interact with the user via the command line, and the [console.table package](https://www.npmjs.com/package/console.table) to print MySQL rows to the console.
 
-**Important**: Comments were provided on password security issues issues with the potential GitHub exposure of the MySQL password. Suggest changing to root and blank or some default form like "1234". See docs.]
+**Important**: Comments were provided on password security issues issues with the potential GitHub exposure of the MySQL password. Suggest changing to 'root' and 'blank' or some default form like "1234". I often use a placeholder non-secure password based on pitch-class set theory partitions: "02468a13579B!". The use of 'a' and 'B' and '!' satisfies most password character set restrictions.
 
 Making queries asynchronous: MySQL2 exposes a `.promise()` function on Connections to upgrade an existing non-Promise connection to use Promises. See the [npm documentation on MySQL2](https://www.npmjs.com/package/mysql2).
 

@@ -167,9 +167,9 @@ function initialPrompt() {
               role.department,
               role.salary
             ]);
-        })
+          })
+        });
       }
-    }
 
     function addRole() {
       inquirer.prompt([

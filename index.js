@@ -1,8 +1,8 @@
 // index.js main index for EmployeeTracker app
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
+const db = require('./db');
 require('console.table');
-require('./db/connection');
+initialPrompt();
 
 // start function here...
 function initialPrompt() {
@@ -38,17 +38,18 @@ function initialPrompt() {
   //      value: 'DELETE_EMPLOYEE' // SQL calls
   //    },  // not required
       {
-        name: 'exit',
+        name: 'quit',
         value: 'quit'
       }
     ]
   }
 
 ]).then((res) => {
-  console.log(res.userSelection);
+  let choice = res.userSelection; 
+  console.log(choice);
   // userSelection choices trigger functions -- still to set up
-  switch(res.userSelection) {
-    case 'view all departments':
+  switch(choice) {
+    case 'VIEW_DEPARTMENTS':
       viewDepartments();
       break;
     case 'view all roles':
@@ -59,143 +60,105 @@ function initialPrompt() {
       break;
     case 'add a department':
       addDepartment();
+      // requires prompt: department.name, add to DB
       break;
     case 'add role':
       addRole();
+      // requires prompt: name, salary, department...
       break;
     case 'add an employee':
       addEmployee();
+      // requires prompt: firstname, lastname, role, manager...
       break;
     case 'update an employee role':
-      updateRole();
+      updateEmployeeRole();
+      // requires prompt: select employee, update role...
       break;
 //    case 'remove an employee':  // this not required
  //     removeEmployee();
  //     break;
-    // case 'exit':
-    //  connection.end();
-     // break;
-     default: 
-      process.exit();
+ // bonus items: update employee managers
+ // view employees by manager
+ // view employees by department
+ // delete departments, roles, employees
+ // view total budget by department (salaries)
+        default: 
+        quit();
   }
 });
 }
 
 // functions res to userSelection...
   function viewDepartments() {
-    let query = `SELECT
-      department.id
-      department.name
-    FROM departments`
-
-    connection.query(query, res.departments, (err, res) => {
-      if (err) throw err;
-      console.table(
-        [
-        department.id,
-        department.name
-        ]);
-      initialPrompt();
+    db.findAllDepartments()
+    .then(([rows]) => {
+      let departments = rows;
+      console.table(departments);
     })
+    .then(() => initialPrompt());
   }
 
   function viewRoles() {
-    let query = `SELECT
-      role.id
-      role.title
-      role.department
-      role.salary
-    FROM employees`
-
-    connection.query(query, res.roles, (err, res) => {
-      if (err) throw err;
-      console.table([
-        role.id,
-        role.title,
-        role.department,
-        role.salary
-      ]);
-      initialPrompt();
+    db.findAllRoles
+    .then(([rows]) => {
+      let roles = rows;
+      console.table(roles);
     })
+    .then(() => initialPrompt());
   }
     
   function viewEmployees() {
-    let query = `SELECT
-      employee.id,
-      employee.first_name,
-      employee.last_name,
-      employee.role,
-      employee.department,
-      employee.salary,
-      employee.manager
-    FROM employees`
-  
-    connection.query(query, res.employees, (err, res) => {
-      if (err) throw err;
-      console.table(
-        [
-        employee.id,
-        employee.first_name,
-        employee.last_name,
-        employee.role,
-        employee.department,
-        employee.salary,
-        employee.manager
-        ]); 
-      initialPrompt();
-    });
+    db.findAllEmployees()
+    .then(([rows]) => {
+      let employees = rows;
+      console.table(employees);
+    })
+    .then(() => initialPrompt());
   }
     
   function addDepartment() {
       inquirer.prompt([
         {
-          type: "input",
           name: "name",
           message: "Department Name: " 
         }   
       ]).then((res) => {
-        let query = `INSERT INTO departments SET ?`;
-          if (err) throw (err);
-          console.table([department.name]);
-          initialPrompt();
-
-          connection.query(query, res.department, (err, res) => {
-            if (err) throw err;
-            console.table([
-              role.id,
-              role.title,
-              role.department,
-              role.salary
-            ]);
-          })
-        });
-      }
+        db.createDepartment(res)
+        .then(() => console.log(message))
+        .then(() => initialPrompt())
+      })
+    }
 
     function addRole() {
+      db.findAllDepartments()
+      .then(([rows]) => {
+        let departments = rows;
+        const departmentChoices = departments.map(( { id, name }) =>
+         ({
+           name: name,
+           value: id
+         }));
+
       inquirer.prompt([
         {
-          type: "input",
           name: "title",
           message: "title of added role: "
         },
         {
-          type: "input",
           name: "salary",
           message: "salary of added role: "
         },
         {
-          type: "input",
+          type: "list",
           name: "department",
-          message: "department of the added role: "
+          message: "department of the added role: ",
+          choices: departmentChoices
         }
-      ]).then((res) => {
-        let query = `INSERT INTO roles SET ?`;
-          if (err) throw (err);
-          console.table(
-          [
-            role.title, role.title, role.department
-          ]);
-          initialPrompt();
+      ]).then(role => {
+          db.createRole(role)
+          .then(() => console.log(message))
+          .then(() => initialPrompt())
+        })
       })
     }
 
@@ -207,7 +170,6 @@ function initialPrompt() {
           message: "first_name of added employee: "
         },
         {
-          type: "input",
           name: "last_name",
           message: "last_name of added employee: "
         },
@@ -259,4 +221,6 @@ function initialPrompt() {
       });
     }     
 // removeEmployee(); not required
-
+function quit() {
+  process.exit();
+}

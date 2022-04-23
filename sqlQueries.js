@@ -1,4 +1,4 @@
-// this file may not be needed, cf class DB in db/index.js
+// this file not be needed, cf class DB in db/index.js
 // where the query details are filled in (tbc)
 class sqlQueries {
 

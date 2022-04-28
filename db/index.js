@@ -6,23 +6,23 @@ class DB {
  }
  findAllDepartments() {
   return this.connection.promise().query(
-   'SELECT departments.id, departments.name FROM departments;'
+   'SELECT department.id, department.name FROM department;'
   );
  }
  createDepartment(department) {
   return this.connection.promise().query(
-   'INSERT INTO departments SET ? ', department
+   'INSERT INTO department SET ? ', department
   );
  }
  removeDepartment(departmentId) {
   return this.connection.promise().query(
-   'DELETE FROM departments WHERE id = ?', departmentId
+   'DELETE FROM department WHERE id = ?', departmentId
   );
  }
 
  findAllRoles() {
   return this.connection.promise().query(
-  'SELECT roles.id, roles.title, roles.salary, departments.name AS department FROM role LEFT JOIN department ON role.department_id = departmentId;'
+  'SELECT role.id, role.title, role.salary, department.name AS department FROM role LEFT JOIN department on role.department_id = department.id;'
   );
  }
  createRole(role) {
@@ -32,28 +32,28 @@ class DB {
  }
  removeRole(roleId) {
   return this.connection.promise().query(
-   'DELETE FROM roles WHERE id = ?', roleId
+   'DELETE FROM role WHERE id = ?', roleId
   );
  }
 
  findAllEmployees() {
   return this.connection.promise().query(
-   "SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.name AS department, roles.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees LEFT JOIN role ON employee.role_id = role.id, LEFT JOIN departments on role.department_id = department.id, LEFT JOIN employee manager on manager.id = employee.manager_id"
+   "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee, LEFT JOIN role on employee.role_id = role.id, LEFT JOIN department on role.department_id = department.id, LEFT JOIN employee manager on manager_id = employee.manager.id;"
   );
  }
  createEmployee(employee) {
   return this.connection.promise().query(
-   'SELECT roles.id, roles.title, roles.salary FROM roles', employee
+   'SELECT role.id, role.title, role.salary FROM role', employee
   );
  }
  removeEmployee(employeeId) {
   return this.connection.promise().query(
-   'DELETE FROM employees WHERE id = ?', employeeId
+   'DELETE FROM employee WHERE id = ?', employeeId
   );
  }
  updateEmployeeRole(employeeId, roleId) {
   return this.connection.promise().query(
-   'UPDATE employees SET role_id = ? WHERE id = ?', [roleId, employeeId]
+   'UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]
   );
  }
  // others to do from bonus...
@@ -62,7 +62,7 @@ class DB {
  // prompt: what is the new manager role?
  // view employees by manager
  // view employees by department
- // delete departments, roles, employees [done]
+ // delete department, roles, employees [done]
  // findBudgetByDepartment(departmentId, roleSalary) {
  //  return this.connection.promise().query(
  // 'SELECT department_id * roles.salary FROM roles'

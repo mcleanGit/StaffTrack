@@ -1,8 +1,8 @@
 # 12 SQL: Employee Tracker
 
-EmployeeTracker is an command-line application to manage a company's employee database. The app uses Node.js, Inquirer, and MySQL. As the app is not deployed, a link to a walkthrough video is provided at the end of this README. The github repository for the app is found here: https://github.com/mcleanGit/StaffTrack.
+EmployeeTracker is a command-line application to manage a company's employee database. The app uses Node.js, Inquirer, and MySQL. As the app is not deployed, a link to a walkthrough video is provided at the end of this README. The github repository for the app is found here: https://github.com/mcleanGit/StaffTrack.
 
-This is the background User Story the app addresses:
+This is the received background User Story the app addresses:
 
 ## User Story
 
@@ -48,6 +48,7 @@ The app uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to conne
 **Important**: Comments were provided on password security issues issues with the potential GitHub exposure of the MySQL password. Suggest changing to 'root' and 'blank' or some default form like "1234". I often use a placeholder non-secure password based on pitch-class set theory partitions: "02468a13579B!". The use of 'a' and 'B' and '!' satisfies most password character set restrictions.
 
 Making queries asynchronous: MySQL2 exposes a `.promise()` function on Connections to upgrade an existing non-Promise connection to use Promises. See the [npm documentation on MySQL2](https://www.npmjs.com/package/mysql2).
+*Note:* The code in db/index.js uses MySQL2 promissory syntax to `return this.connection.promise().query(...` that embeds standard SQL commands for each function.
 
 The database schema is shown in the following image:
 
@@ -83,10 +84,12 @@ The overall schema contains the following three tables:
 
   * `manager_id`: `INT` to hold reference to another employee that is the manager of the current employee (`null` if the employee has no manager)
 
-Suggestions to consider: 
+Suggestions to consider included: 
 You might want to use a separate file that contains functions for performing specific SQL queries you'll need to use. A *constructor function* or *class* could be helpful for organizing these. 
+*Note:* although I initially experimented with creating a separate sqlQueries.js file and Class to hold queries, I opted in the end to embed a Class DB within the main index.js file to organize the promissory queries within the various functions (e.g., findAllDepartments, updateEmployeeRole, etc.).
 
 You might also want to include a `seeds.sql` file to pre-populate your database, making the development of individual features much easier.
+*Note:* a `db/seeds.sql` file was created and pre-populated with fake data. The staff names include reference to Ralph Alpher, Hans Bethe, and George Gamow, who were actual renowned physicists, witty authors of the so-called `alpha-beta-gamma` (or alphabetical) article in cosmology research.
 
 ## Bonus
 
@@ -108,10 +111,10 @@ The following items are submitted for review:
 
 * A walkthrough video demonstrating the functionality of the application.
   Link to video walkthrough in README:
-  vimeo tbd.
+  vimeo link tbd.
 
 * The URL of the GitHub repository, with a unique name and a README describing the project.
-  Link to GitHug repo:  
+  Link to GitHub repo:  
   https://github.com/mcleanGit/StaffTrack
 
 

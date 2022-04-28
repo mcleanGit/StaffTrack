@@ -32,7 +32,7 @@ function initialPrompt() {
         value: 'ADD_EMPLOYEE' // SQL calls
       },
       { name: 'update an employee role',
-        value: 'UPDATE_ROLE' // SQL calls
+        value: 'UPDATE_EMPLOYEE_ROLE' // SQL calls
       },
   //    { name: 'remove an employee',
   //      value: 'DELETE_EMPLOYEE' // SQL calls
@@ -52,25 +52,25 @@ function initialPrompt() {
     case 'VIEW_DEPARTMENTS':
       viewDepartments();
       break;
-    case 'view all roles':
+    case 'VIEW_ROLES':
       viewRoles();
       break;
-    case 'view all employees':
+    case 'VIEW_EMPLOYEES':
       viewEmployees();
       break;
-    case 'add a department':
+    case 'ADD_DEPARTMENT':
       addDepartment();
       // requires prompt: department.name, add to DB
       break;
-    case 'add role':
+    case 'ADD_ROLE':
       addRole();
       // requires prompt: name, salary, department...
       break;
-    case 'add an employee':
+    case 'ADD_EMPLOYEE':
       addEmployee();
       // requires prompt: firstname, lastname, role, manager...
       break;
-    case 'update an employee role':
+    case 'UPDATE_EMPLOYEE_ROLE':
       updateEmployeeRole();
       // requires prompt: select employee, update role...
       break;
@@ -99,7 +99,7 @@ function initialPrompt() {
   }
 
   function viewRoles() {
-    db.findAllRoles
+    db.findAllRoles()
     .then(([rows]) => {
       let roles = rows;
       console.table(roles);
@@ -124,7 +124,7 @@ function initialPrompt() {
         }   
       ]).then((res) => {
         db.createDepartment(res)
-        .then(() => console.log(message))
+        .then(() => console.log(this.message))
         .then(() => initialPrompt())
       })
     }
@@ -184,7 +184,7 @@ function initialPrompt() {
           message: "name of this employee's manager: "
         }
         ]).then((res) => {
-          let query = `INSERT INTO employees SET ?`;
+          let query = `INSERT INTO employee SET ?`;
             if (err) throw (err);
             console.table(
               [
@@ -197,7 +197,7 @@ function initialPrompt() {
         })
       }
 
-      function updateRole() {
+      function updateEmployeeRole() {
         inquirer.prompt ([
           {
             type: number,
@@ -210,7 +210,7 @@ function initialPrompt() {
             message: "employee's new role: "
           },
         ]).then((res) => {
-          let query = `INSERT INTO employees SET id ?`;
+          let query = `INSERT INTO employee SET id ?`;
             if (err) throw (err);
             console.table(
               [

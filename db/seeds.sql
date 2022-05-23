@@ -1,14 +1,14 @@
 -- to employees seeds.sql list -- 
 use employee_tracker_db;
 
-INSERT INTO department (name)
+INSERT INTO departments (name)
   VALUES
   ('Sales'),
   ('Engineering'),
   ('Finance'),
   ('Legal');
 
-INSERT INTO role (title, salary, department_id)
+INSERT INTO roles (title, salary, dept_id)
   VALUES
   ('Sales Lead', 1000000, 1),
   ('Salesperson', 80000, 1),
@@ -19,13 +19,13 @@ INSERT INTO role (title, salary, department_id)
   ('Legal Team Lead', 250000, 4),
   ('Lawyer', 190000, 4);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id )
+INSERT INTO employees (first_name, last_name, roles_id, manager_id)
 VALUES
   ('Ralph', 'Alpher', 1, null),
   ('Hans', 'Bethe', 2, 1),
   ('George', 'Gamow', 3, null),
   ('Daisy', 'Delta', 4, 3),
-  ('Elsa', 'Engles', 5, null),
-  ('Fiona', 'Fowler', 6, 5),
-  ('Gary', 'Gainer', 7, null),
-  ('Helen', 'Hu', 8, 7);
+  ('Oliver', 'Omicron', 5, null),
+  ('Ellie', 'Epsilon', 6, 5),
+  ('Kathy', 'Kappa', 7, null),
+  ('Peter', 'Pi', 8, 7);

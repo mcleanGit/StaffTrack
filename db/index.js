@@ -27,12 +27,12 @@ class DB {
  }
  createRole(role) {
   return this.connection.promise().query(
-   'INSERT INTO role SET ? ', role
+   'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?), role
   );
  }
  removeRole(roleId) {
   return this.connection.promise().query(
-   'DELETE FROM role WHERE id = ?', roleId
+   'DELETE FROM roles WHERE id = ?', roleId
   );
  }
 

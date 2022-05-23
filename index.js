@@ -11,32 +11,54 @@ function initialPrompt() {
     type: 'list',
     name: 'userSelection',
     message: 'Please select a choice using arrow keys',
-    choices: [ // are all choices represented here ? no, some joins later
-      
+    choices: [  
       { name: 'view all departments',
-        value: 'VIEW_DEPARTMENTS' // SQL calls ?? here?
+        value: 'VIEW_DEPARTMENTS' // SQL calls here ?
       },
       { name: 'view all roles',
-        value: 'VIEW_ROLES' // SQL calls
+        value: 'VIEW_ROLES'
       },
       { name: 'view all employees',
-        value: 'VIEW_EMPLOYEES' // SQL calls
+        value: 'VIEW_EMPLOYEES' // SQL calls mysql error here!
       },
       { name: 'add a department',
-        value: 'ADD_DEPARTMENT' // SQL calls
+        value: 'ADD_DEPARTMENT'
       },
       { name: 'add a role',
-        value: 'ADD_ROLE' // SQL calls
+        value: 'ADD_ROLE'
       },
       { name: 'add an employee',
-        value: 'ADD_EMPLOYEE' // SQL calls
+        value: 'ADD_EMPLOYEE'
       },
       { name: 'update an employee role',
-        value: 'UPDATE_EMPLOYEE_ROLE' // SQL calls
+        value: 'UPDATE_EMPLOYEE_ROLE'
       },
-  //    { name: 'remove an employee',
-  //      value: 'DELETE_EMPLOYEE' // SQL calls
-  //    },  // not required
+  // the remainder are 'bonus' items... comment out for now
+  /*
+      { name: 'update employee managers',
+        value: 'UPDATE_EMPLOYEE_MANAGER'
+      },
+      { name: 'view employee by manager',
+        value: 'VIEW_EMPLOYEE_BY_MANAGER'
+      },
+      { name: 'view employees by department',
+        value: 'VIEW_EMPLOYEES_BY_DEPARTMENT'
+      },
+      */
+      { name: 'remove department',
+        value: 'DELETE_DEPARTMENT'
+      },
+      /*
+      { name: 'remove a role',
+        value: 'DELETE_ROLE'
+      },
+      { name: 'remove an employee',
+        value: 'DELETE_EMPLOYEE'
+      },
+      { name: 'view department budget',
+        value: 'VIEW_DEPARTMENT_BUDGET'
+      },
+  */
       {
         name: 'quit',
         value: 'quit'
@@ -74,18 +96,36 @@ function initialPrompt() {
       updateEmployeeRole();
       // requires prompt: select employee, update role...
       break;
-//    case 'remove an employee':  // this not required
- //     removeEmployee();
- //     break;
- // bonus items: update employee managers
- // view employees by manager
- // view employees by department
- // delete departments, roles, employees
- // view total budget by department (salaries)
-        default: 
-        quit();
-  }
-});
+  // the remainder are 'bonus' items... comment our for now
+  /*
+    case 'UPDATE_EMPLOYEE_MANAGER':
+      updateEmployeeManager();
+      break;
+    case 'VIEW_EMPLOYEE_BY_MANAGER':
+      viewEmployeeByManager();
+      break;
+    case 'VIEW_EMPLOYEES_BY_DEPARTMENT':
+      viewEmployeesByDepartment();
+      break;
+    */
+    case 'DELETE_DEPARTMENT':
+      deleteDepartment();
+      break;
+    /*
+    case 'DELETE_ROLE':
+      deleteRole();
+      break;
+    case 'DELETE_EMPLOYEE':
+      deleteEmployee();
+      break;
+    case 'VIEW_DEPARTMENT_BUDGET':
+      viewDepartmentBudget();
+      break;
+  */
+    default:
+      quit();
+    }
+  });
 }
 
 // functions res to userSelection...
@@ -124,7 +164,7 @@ function initialPrompt() {
         }   
       ]).then((res) => {
         db.createDepartment(res)
-        .then(() => console.log(this.message))
+        .then(() => console.log("Department created!"))
         .then(() => initialPrompt())
       })
     }
@@ -179,9 +219,9 @@ function initialPrompt() {
           message: "employee's role: "
         },
         {
-          type: "input",
+          type: number,
           name: "manager",
-          message: "name of this employee's manager: "
+          message: "id of this employee's manager: "
         }
         ]).then((res) => {
           let query = `INSERT INTO employee SET ?`;
@@ -219,8 +259,27 @@ function initialPrompt() {
               ]);
           initialPrompt();
       });
+    }
+
+      function deleteDepartment() {
+        inquirer.prompt ([
+          {
+            name: "dept_id",
+            message: "select department by id for removal: ? "
+          },
+  
+        ]).then((res) => {
+          let query = `DELETE FROM departments ? WHERE id = ?`;
+            if (err) throw (err);
+            console.table(
+              [
+                departments.id
+              ]);
+          initialPrompt();
+      });
     }     
 // removeEmployee(); not required
+// add other ones here...
 function quit() {
   process.exit();
-}
+  }

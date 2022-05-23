@@ -13,13 +13,13 @@ function initialPrompt() {
     message: 'Please select a choice using arrow keys',
     choices: [  
       { name: 'view all departments',
-        value: 'VIEW_DEPARTMENTS' // SQL calls here ?
+        value: 'VIEW_DEPARTMENTS' // SQL calls here
       },
       { name: 'view all roles',
         value: 'VIEW_ROLES'
       },
       { name: 'view all employees',
-        value: 'VIEW_EMPLOYEES' // SQL calls mysql error here!
+        value: 'VIEW_EMPLOYEES'
       },
       { name: 'add a department',
         value: 'ADD_DEPARTMENT'
@@ -33,7 +33,7 @@ function initialPrompt() {
       { name: 'update an employee role',
         value: 'UPDATE_EMPLOYEE_ROLE'
       },
-  // the remainder are 'bonus' items... comment out for now
+  // remainder are 'bonus' items ... comment out for now
   /*
       { name: 'update employee managers',
         value: 'UPDATE_EMPLOYEE_MANAGER'
@@ -82,19 +82,15 @@ function initialPrompt() {
       break;
     case 'ADD_DEPARTMENT':
       addDepartment();
-      // requires prompt: department.name, add to DB
       break;
     case 'ADD_ROLE':
       addRole();
-      // requires prompt: name, salary, department...
       break;
     case 'ADD_EMPLOYEE':
       addEmployee();
-      // requires prompt: firstname, lastname, role, manager...
       break;
     case 'UPDATE_EMPLOYEE_ROLE':
       updateEmployeeRole();
-      // requires prompt: select employee, update role...
       break;
   // the remainder are 'bonus' items... comment our for now
   /*
@@ -196,7 +192,7 @@ function initialPrompt() {
         }
       ]).then(role => {
           db.createRole(role)
-          .then(() => console.log(message))
+          .then(() => console.log("Role created!"))
           .then(() => initialPrompt())
         })
       })
@@ -219,11 +215,11 @@ function initialPrompt() {
           message: "employee's role: "
         },
         {
-          type: number,
+          type: "input",
           name: "manager",
           message: "id of this employee's manager: "
         }
-        ]).then((res) => {
+        ]).then((_res) => {
           let query = `INSERT INTO employee SET ?`;
             if (err) throw (err);
             console.table(
@@ -240,7 +236,7 @@ function initialPrompt() {
       function updateEmployeeRole() {
         inquirer.prompt ([
           {
-            type: number,
+            type: "input",
             name: "employee_id",
             message: "select employee_id for role update:  "
           },
@@ -249,7 +245,7 @@ function initialPrompt() {
             name: "name",
             message: "employee's new role: "
           },
-        ]).then((res) => {
+        ]).then((_res) => {
           let query = `INSERT INTO employee SET id ?`;
             if (err) throw (err);
             console.table(
@@ -265,16 +261,16 @@ function initialPrompt() {
         inquirer.prompt ([
           {
             name: "dept_id",
-            message: "select department by id for removal: ? "
+            message: "select department to be removed by id: ? "
           },
-  
         ]).then((res) => {
-          let query = `DELETE FROM departments ? WHERE id = ?`;
-            if (err) throw (err);
+          let query = `DELETE FROM departments WHERE id = ?`;
+       //     if (err) throw (err);
             console.table(
-              [
-                departments.id
-              ]);
+                [
+                  departments.name
+                ]
+            )
           initialPrompt();
       });
     }     

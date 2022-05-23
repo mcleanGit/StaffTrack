@@ -11,8 +11,7 @@ const connection = mysql.createConnection({
 
 connection.connect(function (err) {
   if (err) throw err;
-  console.log("connection made!");  // works to here
-  // return initialPrompt();  // but not here, not defined
+  console.log("connection made!");
 });
 
 module.exports = connection;

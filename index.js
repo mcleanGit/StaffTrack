@@ -13,7 +13,7 @@ function initialPrompt() {
     message: 'Please select a choice using arrow keys',
     choices: [  
       { name: 'view all departments',
-        value: 'VIEW_DEPARTMENTS' // SQL calls here
+        value: 'VIEW_DEPARTMENTS' // SQL calls here grouping VIEWs
       },
       { name: 'view all roles',
         value: 'VIEW_ROLES'
@@ -21,7 +21,7 @@ function initialPrompt() {
       { name: 'view all employees',
         value: 'VIEW_EMPLOYEES'
       },
-      { name: 'add a department',
+      { name: 'add a department', // SQL calls here grouping ADDs
         value: 'ADD_DEPARTMENT'
       },
       { name: 'add a role',
@@ -30,7 +30,7 @@ function initialPrompt() {
       { name: 'add an employee',
         value: 'ADD_EMPLOYEE'
       },
-      { name: 'update an employee role',
+      { name: 'update an employee role', // SQL call here for UPDATEf
         value: 'UPDATE_EMPLOYEE_ROLE'
       },
   // remainder are 'bonus' items ... comment out for now
@@ -45,16 +45,17 @@ function initialPrompt() {
         value: 'VIEW_EMPLOYEES_BY_DEPARTMENT'
       },
       */
+      // but adding removes DELETEs for dept, role, employee
       { name: 'remove department',
         value: 'DELETE_DEPARTMENT'
       },
-      /*
       { name: 'remove a role',
         value: 'DELETE_ROLE'
       },
       { name: 'remove an employee',
         value: 'DELETE_EMPLOYEE'
       },
+/*
       { name: 'view department budget',
         value: 'VIEW_DEPARTMENT_BUDGET'
       },
@@ -92,7 +93,7 @@ function initialPrompt() {
     case 'UPDATE_EMPLOYEE_ROLE':
       updateEmployeeRole();
       break;
-  // the remainder are 'bonus' items... comment our for now
+  // the remainder are 'bonus' items... comment out for now
   /*
     case 'UPDATE_EMPLOYEE_MANAGER':
       updateEmployeeManager();
@@ -107,14 +108,13 @@ function initialPrompt() {
     case 'DELETE_DEPARTMENT':
       deleteDepartment();
       break;
-    /*
     case 'DELETE_ROLE':
       deleteRole();
       break;
     case 'DELETE_EMPLOYEE':
       deleteEmployee();
       break;
-    case 'VIEW_DEPARTMENT_BUDGET':
+ /*   case 'VIEW_DEPARTMENT_BUDGET':
       viewDepartmentBudget();
       break;
   */
@@ -268,14 +268,47 @@ function initialPrompt() {
        //     if (err) throw (err);
             console.table(
                 [
-                  departments.name
+                  department.name
                 ]
             )
           initialPrompt();
       });
-    }     
-// removeEmployee(); not required
-// add other ones here...
-function quit() {
-  process.exit();
+    } 
+
+    function deleteRole() {
+      inquirer.prompt ([
+        {
+          name: "role_id",
+          message: "select role to be removed by id: ? "
+        },
+      ]).then((res) => {
+        let query = `DELETE FROM roles WHERE id = ?`;
+     //     if (err) throw (err);
+          console.table(
+              [
+                role.name
+              ]
+          )
+        initialPrompt();
+    });
+  }       
+    function deleteEmployee() {
+      inquirer.prompt ([
+        {
+          name: "employee_id",
+          message: "select employee to be removed by id: ? "
+        },
+      ]).then((res) => {
+        let query = `DELETE FROM employees WHERE id = ?`;
+     //     if (err) throw (err);
+          console.table(
+              [
+                employee.name
+              ]
+          )
+        initialPrompt();
+    });
+  }     
+    function quit() {
+    process.exit();
   }

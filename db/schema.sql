@@ -22,7 +22,7 @@ CREATE TABLE employees (
  first_name VARCHAR(32) NOT NULL,
  last_name VARCHAR(32) NOT NULL,
  role_id INT UNSIGNED NOT NULL,
- INDEX role_ind (role_id),
+ INDEX roles_ind (role_id),
  CONSTRAINT fk_roles FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
  manager_id INT UNSIGNED,
  INDEX man_ind (manager_id),

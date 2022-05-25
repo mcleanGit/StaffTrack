@@ -268,7 +268,7 @@ function initialPrompt() {
        //     if (err) throw (err);
             console.table(
                 [
-                  department.name
+                  departments.name
                 ]
             )
           initialPrompt();
@@ -286,7 +286,7 @@ function initialPrompt() {
      //     if (err) throw (err);
           console.table(
               [
-                role.name
+                roles.name
               ]
           )
         initialPrompt();
@@ -303,7 +303,7 @@ function initialPrompt() {
      //     if (err) throw (err);
           console.table(
               [
-                employee.name
+                employees.name
               ]
           )
         initialPrompt();

@@ -43,7 +43,7 @@ class DB {
  }
  createEmployee(employee) {
   return this.connection.promise().query(
-   'SELECT role.id, role.title, role.salary FROM role', employee
+   'SELECT roles.id, roles.title, roles.salary FROM roles', employee
   );
  }
  removeEmployee(employeeId) {
@@ -53,7 +53,7 @@ class DB {
  }
  updateEmployeeRole(employeeId, roleId) {
   return this.connection.promise().query(
-   'UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId]
+   'UPDATE employees SET role_id = ? WHERE id = ?', [roleId, employeeId]
   );
  }
  // others to do from bonus...

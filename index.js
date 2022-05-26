@@ -21,6 +21,9 @@ function initialPrompt() {
       { name: 'view all employees',
         value: 'VIEW_EMPLOYEES'
       },
+//      { name: 'view all employees full info',
+//        value: 'VIEW_ALL_EMPLOYEES'
+//      },
       { name: 'add a department', // SQL calls here grouping ADDs
         value: 'ADD_DEPARTMENT'
       },
@@ -30,7 +33,7 @@ function initialPrompt() {
       { name: 'add an employee',
         value: 'ADD_EMPLOYEE'
       },
-      { name: 'update an employee role', // SQL call here for UPDATEf
+      { name: 'update an employee role', // SQL call here for UPDATE
         value: 'UPDATE_EMPLOYEE_ROLE'
       },
   // remainder are 'bonus' items ... comment out for now
@@ -70,7 +73,7 @@ function initialPrompt() {
 ]).then((res) => {
   let choice = res.userSelection; 
   console.log(choice);
-  // userSelection choices trigger functions -- still to set up
+  // userSelection choices trigger functions
   switch(choice) {
     case 'VIEW_DEPARTMENTS':
       viewDepartments();
@@ -80,6 +83,9 @@ function initialPrompt() {
       break;
     case 'VIEW_EMPLOYEES':
       viewEmployees();
+      break;
+    case 'VIEW_ALL_EMPLOYEES':
+      viewAllEmployees();
       break;
     case 'ADD_DEPARTMENT':
       addDepartment();
@@ -105,6 +111,7 @@ function initialPrompt() {
       viewEmployeesByDepartment();
       break;
     */
+   // DELETES, however, are worth including
     case 'DELETE_DEPARTMENT':
       deleteDepartment();
       break;
@@ -142,7 +149,7 @@ function initialPrompt() {
     })
     .then(() => initialPrompt());
   }
-    
+ 
   function viewEmployees() {
     db.findAllEmployees()
     .then(([rows]) => {
@@ -151,7 +158,16 @@ function initialPrompt() {
     })
     .then(() => initialPrompt());
   }
-    
+/*
+  function viewAllEmployeesPlus() {
+    db.findAllEmployeesPlus()
+      .then(([rows]) => {
+        let employees = rows;
+        console.table(employees)   
+      })
+     .then(() => initialPrompt())
+    }
+ */
   function addDepartment() {
       inquirer.prompt([
         {
@@ -166,15 +182,6 @@ function initialPrompt() {
     }
 
     function addRole() {
-      db.findAllDepartments()
-      .then(([rows]) => {
-        let departments = rows;
-        const departmentChoices = departments.map(( { id, name }) =>
-         ({
-           name: name,
-           value: id
-         }));
-
       inquirer.prompt([
         {
           name: "title",
@@ -187,14 +194,45 @@ function initialPrompt() {
         {
           type: "list",
           name: "department",
+          message: "department of the added role: "
+          choice: departmentChoices
+        }
+        ]).then(role => {
+            db.createRole(role)
+            .then(() => console.log("Role created!"))
+            .then(() => initialPrompt())
+        })     
+      }
+/*
+    function addRole() {
+      db.findAllDepartments()
+       .then(([rows]) => {
+        let departments = rows;
+         const departmentChoices = departments.map(( { id, name }) =>
+           ({
+            name: name,
+            value: id
+           }));
+      inquirer.prompt([
+        {
+          name: "title",
+          message: "title of added role: "
+        },
+        {
+          name: "salary",
+          message: "salary of added role: "
+        },
+        {
+//          type: "list",
+          name: "department",
           message: "department of the added role: ",
-          choices: departmentChoices
+ //       choices: departmentChoices
         }
       ]).then(role => {
           db.createRole(role)
           .then(() => console.log("Role created!"))
           .then(() => initialPrompt())
-        })
+        })     
       })
     }
 
@@ -219,7 +257,13 @@ function initialPrompt() {
           name: "manager",
           message: "id of this employee's manager: "
         }
-        ]).then((_res) => {
+      ]).then((res) => {
+        db.createEmployee(res)
+        .then(() => console.log("Employee added!"))
+        .then(() => initialPrompt())
+      })
+
+ /*     .then((_res) => {
           let query = `INSERT INTO employee SET ?`;
             if (err) throw (err);
             console.table(
@@ -227,11 +271,11 @@ function initialPrompt() {
                 employee.first_name,
                 employee.last_name,
                 employee.role,
-                employee.manager
+                employee.managerId
               ]);
             initialPrompt();
         })
-      }
+*/
 
       function updateEmployeeRole() {
         inquirer.prompt ([
@@ -263,16 +307,16 @@ function initialPrompt() {
             name: "dept_id",
             message: "select department to be removed by id: ? "
           },
-        ]).then((res) => {
+        ]).then((_res) => {
           let query = `DELETE FROM departments WHERE id = ?`;
-       //     if (err) throw (err);
-            console.table(
-                [
-                  departments.name
-                ]
-            )
+             if (err) throw (err);
+             console.table(
+               [
+                 departments.name
+               ]
+             );
+        });
           initialPrompt();
-      });
     } 
 
     function deleteRole() {
@@ -283,12 +327,12 @@ function initialPrompt() {
         },
       ]).then((res) => {
         let query = `DELETE FROM roles WHERE id = ?`;
-     //     if (err) throw (err);
+          if (err) throw (err);
           console.table(
               [
                 roles.name
               ]
-          )
+          );
         initialPrompt();
     });
   }       
@@ -300,12 +344,12 @@ function initialPrompt() {
         },
       ]).then((res) => {
         let query = `DELETE FROM employees WHERE id = ?`;
-     //     if (err) throw (err);
+          if (err) throw (err);
           console.table(
               [
                 employees.name
               ]
-          )
+          );
         initialPrompt();
     });
   }     

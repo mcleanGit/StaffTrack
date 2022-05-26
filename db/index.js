@@ -35,20 +35,45 @@ class DB {
    'DELETE FROM roles WHERE id = ?', roleId
   );
  }
-
+// this is the basic function
  findAllEmployees() {
   return this.connection.promise().query(
    'SELECT * FROM employees'
   );
  }
+ // this is the expanded function expected in the criteria
+/*  findAllEmployeesPlus() {
+   let query =
+   `SELECT
+     employees.id,
+     employees.first_name,
+     employees.last_name,
+     roles.title,
+     department.name AS department,
+     roles.salary,
+     CONCAT(manager.first_name, ' ', manager.last_name) AS manager,
+     FROM employees
+     LEFT JOIN roles
+      ON employee.role_id = role.id
+     LEFT JOIN department
+      ON departments.id = roles.department_id
+     LEFT JOIN employee manager
+      ON manager.id = employee.manager.id`
+   connection.query(query, (err, res)=>{
+    if (err) throw err;
+    console.table(res);
+    initialPrompt();
+   })
+ }
+*/
  createEmployee(employee) {
   return this.connection.promise().query(
-   'SELECT roles.id, roles.title, roles.salary FROM roles', employee
+   'INSERT INTO employees SET ? ', employee
   );
  }
  removeEmployee(employeeId) {
   return this.connection.promise().query(
-   'DELETE FROM employee WHERE id = ?', employeeId
+   'DELETE FROM employees WHERE id = ?', employeeId
   );
  }
  updateEmployeeRole(employeeId, roleId) {

@@ -16,7 +16,7 @@ class DB {
  }
  removeDepartment(departmentId) {
   return this.connection.promise().query(
-   'DELETE FROM departments WHERE id = ?', departmentId
+   'DELETE FROM departments WHERE id = ? ', departmentId
   );
  }
 

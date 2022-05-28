@@ -84,14 +84,14 @@ function initialPrompt() {
     case 'VIEW_EMPLOYEES':
       viewEmployees();
       break;
-    case 'VIEW_ALL_EMPLOYEES':
-      viewAllEmployees();
-      break;
+//    case 'VIEW_ALL_EMPLOYEES':
+//      viewAllEmployees();
+//      break;
     case 'ADD_DEPARTMENT':
-      addDepartment();
+      createDepartment();
       break;
     case 'ADD_ROLE':
-      addRole();
+      createRole();
       break;
     case 'ADD_EMPLOYEE':
       addEmployee();
@@ -168,7 +168,7 @@ function initialPrompt() {
      .then(() => initialPrompt())
     }
  */
-  function addDepartment() {
+  function createDepartment() {
       inquirer.prompt([
         {
           name: "name",
@@ -181,7 +181,7 @@ function initialPrompt() {
       })
     }
 
-    function addRole() {
+  function createRole() {
       inquirer.prompt([
         {
           name: "title",
@@ -192,50 +192,30 @@ function initialPrompt() {
           message: "salary of added role: "
         },
         {
-          type: "list",
-          name: "department",
-          message: "department of the added role: "
-          choice: departmentChoices
+          name: "dept_id",
+          message: "department id of the added role: ",
         }
-        ]).then(role => {
-            db.createRole(role)
+        ]).then((res) => {
+            db.createRole(res)
             .then(() => console.log("Role created!"))
             .then(() => initialPrompt())
         })     
       }
-/*
-    function addRole() {
-      db.findAllDepartments()
-       .then(([rows]) => {
-        let departments = rows;
-         const departmentChoices = departments.map(( { id, name }) =>
-           ({
-            name: name,
-            value: id
-           }));
-      inquirer.prompt([
-        {
-          name: "title",
-          message: "title of added role: "
-        },
-        {
-          name: "salary",
-          message: "salary of added role: "
-        },
-        {
-//          type: "list",
-          name: "department",
-          message: "department of the added role: ",
- //       choices: departmentChoices
-        }
-      ]).then(role => {
-          db.createRole(role)
-          .then(() => console.log("Role created!"))
-          .then(() => initialPrompt())
-        })     
-      })
-    }
 
+      /*
+//    function createRole() {
+//      db.findAllDepartments()
+//       .then(([rows]) => {
+//        let departments = rows;
+//         const departmentChoices = departments.map(( { id, name }) =>
+//           ({
+//            name: name,
+//            value: id
+//           }));
+      inquirer.prompt([
+        ETC
+        
+ */   
     function addEmployee() {
       inquirer.prompt([
         {
@@ -254,10 +234,20 @@ function initialPrompt() {
         },
         {
           type: "input",
-          name: "manager",
+          name: "manager_id",
           message: "id of this employee's manager: "
         }
-      ]).then((res) => {
+      ]).then((_res) => {
+        let query = `INSERT INTO employee SET ?`;
+          if (err) throw (err);
+          console.table(
+            [
+              employee.first_name,
+              employee.last_name,
+              employee.role,
+              employee.managerId
+            ]);
+      then((res) => {
         db.createEmployee(res)
         .then(() => console.log("Employee added!"))
         .then(() => initialPrompt())
@@ -276,8 +266,7 @@ function initialPrompt() {
             initialPrompt();
         })
 */
-
-      function updateEmployeeRole() {
+      function updateEmployee () {
         inquirer.prompt ([
           {
             type: "input",
@@ -290,7 +279,7 @@ function initialPrompt() {
             message: "employee's new role: "
           },
         ]).then((_res) => {
-          let query = `INSERT INTO employee SET id ?`;
+          let query = `INSERT INTO roles SET id ?`;
             if (err) throw (err);
             console.table(
               [
@@ -304,20 +293,24 @@ function initialPrompt() {
       function deleteDepartment() {
         inquirer.prompt ([
           {
+            type: "input",
             name: "dept_id",
             message: "select department to be removed by id: ? "
           },
         ]).then((_res) => {
-          let query = `DELETE FROM departments WHERE id = ?`;
-             if (err) throw (err);
-             console.table(
-               [
-                 departments.name
-               ]
-             );
-        });
-          initialPrompt();
-    } 
+         let query = `DELETE FROM departments WHERE id = ?`;
+  //           if (_err) throw (err);
+   //          console.table(
+   //            [
+    //             departments.name
+    //           ]
+              ).then((res) => {
+              db.deleteDepartment(_res)
+              .then(() => console.log("Department deleted!"))
+              .then(() => initialPrompt())
+            })
+        }
+
 
     function deleteRole() {
       inquirer.prompt ([
@@ -335,7 +328,8 @@ function initialPrompt() {
           );
         initialPrompt();
     });
-  }       
+  } 
+
     function deleteEmployee() {
       inquirer.prompt ([
         {
@@ -352,7 +346,11 @@ function initialPrompt() {
           );
         initialPrompt();
     });
-  }     
+  }
+
     function quit() {
     process.exit();
   }
+*/
+})
+    }

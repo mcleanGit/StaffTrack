@@ -13,7 +13,7 @@ function initialPrompt() {
     message: 'Please select a choice using arrow keys',
     choices: [  
       { name: 'view all departments',
-        value: 'VIEW_DEPARTMENTS' // SQL calls here grouping VIEWs
+        value: 'VIEW_DEPARTMENTS'
       },
       { name: 'view all roles',
         value: 'VIEW_ROLES'
@@ -21,10 +21,7 @@ function initialPrompt() {
       { name: 'view all employees',
         value: 'VIEW_EMPLOYEES'
       },
-//      { name: 'view all employees full info',
-//        value: 'VIEW_ALL_EMPLOYEES'
-//      },
-      { name: 'add a department', // SQL calls here grouping ADDs
+      { name: 'add a department',
         value: 'ADD_DEPARTMENT'
       },
       { name: 'add a role',
@@ -33,22 +30,10 @@ function initialPrompt() {
       { name: 'add an employee',
         value: 'ADD_EMPLOYEE'
       },
-      { name: 'update an employee role', // SQL call here for UPDATE
+      { name: 'update an employee role',
         value: 'UPDATE_EMPLOYEE_ROLE'
       },
-  // remainder are 'bonus' items ... comment out for now
-  /*
-      { name: 'update employee managers',
-        value: 'UPDATE_EMPLOYEE_MANAGER'
-      },
-      { name: 'view employee by manager',
-        value: 'VIEW_EMPLOYEE_BY_MANAGER'
-      },
-      { name: 'view employees by department',
-        value: 'VIEW_EMPLOYEES_BY_DEPARTMENT'
-      },
-      */
-      // but adding removes DELETEs for dept, role, employee
+// adding 'bonus' items for deletes
       { name: 'remove department',
         value: 'DELETE_DEPARTMENT'
       },
@@ -58,11 +43,6 @@ function initialPrompt() {
       { name: 'remove an employee',
         value: 'DELETE_EMPLOYEE'
       },
-/*
-      { name: 'view department budget',
-        value: 'VIEW_DEPARTMENT_BUDGET'
-      },
-  */
       {
         name: 'quit',
         value: 'quit'
@@ -71,9 +51,8 @@ function initialPrompt() {
   }
 
 ]).then((res) => {
-  let choice = res.userSelection; 
-  console.log(choice);
-  // userSelection choices trigger functions
+  let choice = res.userSelection;
+  // userSelection choice triggers functions
   switch(choice) {
     case 'VIEW_DEPARTMENTS':
       viewDepartments();
@@ -84,9 +63,6 @@ function initialPrompt() {
     case 'VIEW_EMPLOYEES':
       viewEmployees();
       break;
-//    case 'VIEW_ALL_EMPLOYEES':
-//      viewAllEmployees();
-//      break;
     case 'ADD_DEPARTMENT':
       createDepartment();
       break;
@@ -99,19 +75,7 @@ function initialPrompt() {
     case 'UPDATE_EMPLOYEE_ROLE':
       updateEmployeeRole();
       break;
-  // the remainder are 'bonus' items... comment out for now
-  /*
-    case 'UPDATE_EMPLOYEE_MANAGER':
-      updateEmployeeManager();
-      break;
-    case 'VIEW_EMPLOYEE_BY_MANAGER':
-      viewEmployeeByManager();
-      break;
-    case 'VIEW_EMPLOYEES_BY_DEPARTMENT':
-      viewEmployeesByDepartment();
-      break;
-    */
-   // DELETES, however, are worth including
+ // including 'bonus' DELETES
     case 'DELETE_DEPARTMENT':
       deleteDepartment();
       break;
@@ -121,10 +85,6 @@ function initialPrompt() {
     case 'DELETE_EMPLOYEE':
       deleteEmployee();
       break;
- /*   case 'VIEW_DEPARTMENT_BUDGET':
-      viewDepartmentBudget();
-      break;
-  */
     default:
       quit();
     }
@@ -132,6 +92,7 @@ function initialPrompt() {
 }
 
 // functions res to userSelection...
+// grouping all view functions
   function viewDepartments() {
     db.findAllDepartments()
     .then(([rows]) => {
@@ -158,16 +119,8 @@ function initialPrompt() {
     })
     .then(() => initialPrompt());
   }
-/*
-  function viewAllEmployeesPlus() {
-    db.findAllEmployeesPlus()
-      .then(([rows]) => {
-        let employees = rows;
-        console.table(employees)   
-      })
-     .then(() => initialPrompt())
-    }
- */
+
+// grouping all create/add functions
   function createDepartment() {
       inquirer.prompt([
         {
@@ -175,7 +128,7 @@ function initialPrompt() {
           message: "Department Name: " 
         }   
       ]).then((res) => {
-        db.createDepartment(res)
+        db.createDepartment(res.name)
         .then(() => console.log("Department created!"))
         .then(() => initialPrompt())
       })
@@ -201,22 +154,8 @@ function initialPrompt() {
             .then(() => initialPrompt())
         })     
       }
-
-      /*
-//    function createRole() {
-//      db.findAllDepartments()
-//       .then(([rows]) => {
-//        let departments = rows;
-//         const departmentChoices = departments.map(( { id, name }) =>
-//           ({
-//            name: name,
-//            value: id
-//           }));
-      inquirer.prompt([
-        ETC
-        
- */   
-    function addEmployee() {
+  
+  function addEmployee() {
       inquirer.prompt([
         {
           type: "input",
@@ -229,128 +168,87 @@ function initialPrompt() {
         },
         {
           type: "input",
-          name: "role",
-          message: "employee's role: "
+          name: "role_id",
+          message: "employee's role id: "
         },
         {
           type: "input",
           name: "manager_id",
           message: "id of this employee's manager: "
         }
-      ]).then((_res) => {
-        let query = `INSERT INTO employee SET ?`;
-          if (err) throw (err);
-          console.table(
-            [
-              employee.first_name,
-              employee.last_name,
-              employee.role,
-              employee.managerId
-            ]);
-      then((res) => {
+      ])
+      .then((res) => {
         db.createEmployee(res)
         .then(() => console.log("Employee added!"))
         .then(() => initialPrompt())
       })
-
- /*     .then((_res) => {
-          let query = `INSERT INTO employee SET ?`;
-            if (err) throw (err);
-            console.table(
-              [
-                employee.first_name,
-                employee.last_name,
-                employee.role,
-                employee.managerId
-              ]);
-            initialPrompt();
-        })
-*/
-      function updateEmployee () {
-        inquirer.prompt ([
-          {
-            type: "input",
-            name: "employee_id",
-            message: "select employee_id for role update:  "
-          },
-          {
-            type: "input",
-            name: "name",
-            message: "employee's new role: "
-          },
-        ]).then((_res) => {
-          let query = `INSERT INTO roles SET id ?`;
-            if (err) throw (err);
-            console.table(
-              [
-                employee.id,
-                employee.newRole,
-              ]);
-          initialPrompt();
-      });
+    }
+ 
+  function updateEmployeeRole () {
+      inquirer.prompt ([
+        {
+          type: "input",
+          name: "employee_id",
+          message: "select employee_id for role update:  "
+        },
+        {
+          type: "input",
+          name: "role_id",
+          message: "employee's new role id: "
+        },
+      ])
+      .then((res) => {
+        db.updateEmployeeRole(res.employee_id, res.role_id)
+        .then(() => console.log("Employee role updated!"))
+        .then(() => initialPrompt())
+      })
     }
 
-      function deleteDepartment() {
-        inquirer.prompt ([
-          {
-            type: "input",
-            name: "dept_id",
-            message: "select department to be removed by id: ? "
-          },
-        ]).then((_res) => {
-         let query = `DELETE FROM departments WHERE id = ?`;
-  //           if (_err) throw (err);
-   //          console.table(
-   //            [
-    //             departments.name
-    //           ]
-              ).then((res) => {
-              db.deleteDepartment(_res)
-              .then(() => console.log("Department deleted!"))
-              .then(() => initialPrompt())
-            })
-        }
+  // grouping all delete functions
+  function deleteDepartment() {
+      inquirer.prompt ([
+        {
+          type: "input",
+          name: "dept_id",
+          message: "select department to be removed by id: ? "
+        },
+      ])
+        .then((res) => {
+        db.removeDepartment(res)
+        .then(() => console.log("Department deleted!"))
+        .then(() => initialPrompt())
+      })
+  }
 
-
-    function deleteRole() {
+  function deleteRole() {
       inquirer.prompt ([
         {
           name: "role_id",
           message: "select role to be removed by id: ? "
         },
-      ]).then((res) => {
-        let query = `DELETE FROM roles WHERE id = ?`;
-          if (err) throw (err);
-          console.table(
-              [
-                roles.name
-              ]
-          );
-        initialPrompt();
-    });
-  } 
+      ])
+        .then((res) => {
+          db.deleteRole(_res)
+          .then(() => console.log("Role deleted!"))
+          .then(() => initialPrompt())
+        })
+    }; 
 
-    function deleteEmployee() {
+  function deleteEmployee() {
       inquirer.prompt ([
         {
           name: "employee_id",
           message: "select employee to be removed by id: ? "
         },
-      ]).then((res) => {
-        let query = `DELETE FROM employees WHERE id = ?`;
-          if (err) throw (err);
-          console.table(
-              [
-                employees.name
-              ]
-          );
-        initialPrompt();
-    });
+      ])
+      .then((res) => {
+        db.deleteEmployee(_res)
+        .then(() => console.log("Employee deleted!"))
+        .then(() => initialPrompt())
+      })        
   }
 
     function quit() {
     process.exit();
   }
-*/
-})
-    }
+

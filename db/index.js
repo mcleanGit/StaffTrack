@@ -16,7 +16,7 @@ class DB {
  }
  removeDepartment(departmentId) {
   return this.connection.promise().query(
-   'DELETE FROM departments WHERE id = ? ', departmentId
+   'DELETE FROM departments WHERE id = ?', departmentId
   );
  }
 
@@ -27,7 +27,7 @@ class DB {
  }
  createRole(role) {
   return this.connection.promise().query(
-   'INSERT INTO roles (title, salary, dept_id) VALUES (?,?,?)', role
+   'INSERT INTO roles SET ? ', role
   );
  }
  removeRole(roleId) {
@@ -41,34 +41,9 @@ class DB {
    'SELECT * FROM employees'
   );
  }
- // this is the expanded function expected in the criteria
-/*  findAllEmployeesPlus() {
-   let query =
-   `SELECT
-     employees.id,
-     employees.first_name,
-     employees.last_name,
-     roles.title,
-     department.name AS department,
-     roles.salary,
-     CONCAT(manager.first_name, ' ', manager.last_name) AS manager,
-     FROM employees
-     LEFT JOIN roles
-      ON employee.role_id = role.id
-     LEFT JOIN department
-      ON departments.id = roles.department_id
-     LEFT JOIN employee manager
-      ON manager.id = employee.manager.id`
-   connection.query(query, (err, res)=>{
-    if (err) throw err;
-    console.table(res);
-    initialPrompt();
-   })
- }
-*/
  createEmployee(employee) {
   return this.connection.promise().query(
-   'INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)', employee
+   'INSERT INTO employees SET ? ', employee
   );
  }
  removeEmployee(employeeId) {
@@ -81,17 +56,7 @@ class DB {
   return this.connection.promise().query(
    'UPDATE employees SET role_id = ? WHERE id = ?', [roleId, employeeId]
   );
- }
- // others to do from bonus...
- // update employee manager
- // updateEmployeeManager(employeeId, managerId) etc
- // prompt: what is the new manager role?
- // view employees by manager
- // view employees by department
- // delete department, roles, employees [done]
- // findBudgetByDepartment(departmentId, roleSalary) {
- //  return this.connection.promise().query(
- // 'SELECT department_id * roles.salary FROM roles'
+  }
 
 }
 

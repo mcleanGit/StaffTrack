@@ -11,7 +11,7 @@ class DB {
  }
  createDepartment(department) {
   return this.connection.promise().query(
-   'INSERT INTO departments SET ? ', department
+   'INSERT INTO departments (name) VALUES (?) ', department
   );
  }
  removeDepartment(departmentId) {
@@ -68,13 +68,14 @@ class DB {
 */
  createEmployee(employee) {
   return this.connection.promise().query(
-   'INSERT INTO employees SET ? ', employee
+   'INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)', employee
   );
  }
  removeEmployee(employeeId) {
   return this.connection.promise().query(
    'DELETE FROM employees WHERE id = ?', employeeId
   );
+  
  }
  updateEmployeeRole(employeeId, roleId) {
   return this.connection.promise().query(

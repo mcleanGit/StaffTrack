@@ -209,7 +209,7 @@ function initialPrompt() {
       inquirer.prompt ([
         {
           type: "input",
-          name: "departmentId",
+          name: "dept_id",
           message: "select department to be removed by id: ? "
         },
       ])
@@ -237,7 +237,7 @@ function initialPrompt() {
   function deleteEmployee() {
       inquirer.prompt ([
         {
-          name: "employeeId",
+          name: "employee_id",
           message: "select employee to be removed by id: ? "
         },
       ])

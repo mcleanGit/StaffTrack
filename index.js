@@ -209,12 +209,12 @@ function initialPrompt() {
       inquirer.prompt ([
         {
           type: "input",
-          name: "dept_id",
+          name: "departmentId",
           message: "select department to be removed by id: ? "
         },
       ])
         .then((res) => {
-        db.deleteDepartment(res.name)
+        db.deleteDepartment(res.departmentId)
         .then(() => console.log("Department deleted!"))
         .then(() => initialPrompt())
       })
@@ -223,12 +223,12 @@ function initialPrompt() {
   function deleteRole() {
       inquirer.prompt ([
         {
-          name: "role_id",
+          name: "roleId",
           message: "select role to be removed by id: ? "
         },
       ])
         .then((res) => {
-          db.deleteRole(res)
+          db.deleteRole(res.roleId)
           .then(() => console.log("Role deleted!"))
           .then(() => initialPrompt())
         })
@@ -237,12 +237,12 @@ function initialPrompt() {
   function deleteEmployee() {
       inquirer.prompt ([
         {
-          name: "employee_id",
+          name: "employeeId",
           message: "select employee to be removed by id: ? "
         },
       ])
       .then((res) => {
-        db.deleteEmployee(res)
+        db.deleteEmployee(res.employeeId)
         .then(() => console.log("Employee deleted!"))
         .then(() => initialPrompt())
       })        

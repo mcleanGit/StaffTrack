@@ -14,10 +14,10 @@ class DB {
    'INSERT INTO departments (name) VALUES (?) ', department
   );
  }
- removeDepartment(departmentId) {
+ removeDepartment(dept_id) {
   return this.connection.promise().query(
-   'DELETE FROM departments WHERE id = ?', departmentId
-  );
+   'DELETE FROM departments WHERE id = ?', dept_id
+   );
  }
 
  findAllRoles() {

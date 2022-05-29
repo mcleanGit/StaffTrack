@@ -6,7 +6,7 @@ class DB {
  }
  findAllDepartments() {
   return this.connection.promise().query(
-   'SELECT * FROM departments'
+    'SELECT * FROM departments'
   );
  }
  createDepartment(department) {
@@ -32,7 +32,7 @@ class DB {
  }
  deleteRole(roleId) {
   return this.connection.promise().query(
-   'DELETE FROM roles WHERE id = (?)', roleId
+   'DELETE FROM roles WHERE id = ?', roleId
   );
  }
 // this is the basic function
@@ -48,7 +48,7 @@ class DB {
  }
  deleteEmployee(employeeId) {
   return this.connection.promise().query(
-   'DELETE FROM employees WHERE id = (?) ', employeeId
+   'DELETE FROM employees WHERE id = ?', employeeId
   );
   
  }

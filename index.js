@@ -228,7 +228,7 @@ function initialPrompt() {
         },
       ])
         .then((res) => {
-          db.removeRole(res)
+          db.deleteRole(res)
           .then(() => console.log("Role deleted!"))
           .then(() => initialPrompt())
         })

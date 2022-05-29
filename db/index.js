@@ -14,7 +14,7 @@ class DB {
    'INSERT INTO departments (name) VALUES (?) ', department
   );
  }
- removeDepartment(dept_id) {
+ deleteDepartment(dept_id) {
   return this.connection.promise().query(
    'DELETE FROM departments WHERE id = ?', dept_id
    );
@@ -30,7 +30,7 @@ class DB {
    'INSERT INTO roles SET ? ', role
   );
  }
- removeRole(roleId) {
+ deleteRole(roleId) {
   return this.connection.promise().query(
    'DELETE FROM roles WHERE id = ?', roleId
   );
@@ -46,7 +46,7 @@ class DB {
    'INSERT INTO employees SET ? ', employee
   );
  }
- removeEmployee(employeeId) {
+ deleteEmployee(employeeId) {
   return this.connection.promise().query(
    'DELETE FROM employees WHERE id = ?', employeeId
   );

@@ -1,6 +1,6 @@
 # 12 SQL: Employee Tracker
 
-EmployeeTracker is a command-line application to manage a company's employee database. The app uses Node.js, Inquirer, and MySQL. As the app is not deployed, a link to a walkthrough video is provided at the end of this README. The github repository for the app is found here: https://github.com/mcleanGit/StaffTrack.
+EmployeeTracker is a command-line application to manage a company's employee database. The app uses Node.js, Inquirer, and MySQL. The database is set up with `mysql` using a created employee_tracker_db. The db is sourced with schema and seeded from the mysql prompt line. Queries can be made within mysql. However, mysql is quit so the command-line application can be launched with `node index`. Interactions through `inquirer` prompts are set up so that user responses are fed through functions to read, create, update, and delete information on employees, roles, and departments which is displayed via `console.table`. As the app is not deployed, a link to a walkthrough video is provided at the end of this README. The github repository for the app is found here: https://github.com/mcleanGit/StaffTrack.
 
 This is the received background User Story the app addresses:
 
@@ -50,6 +50,8 @@ The app uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to conne
 Making queries asynchronous: MySQL2 exposes a `.promise()` function on Connections to upgrade an existing non-Promise connection to use Promises. See the [npm documentation on MySQL2](https://www.npmjs.com/package/mysql2).
 *Note:* The code in db/index.js uses MySQL2 promissory syntax to `return this.connection.promise().query(...` that embeds standard SQL commands for each function.
 
+## DB Schema and Seeds
+
 The database schema is shown in the following image:
 
 ![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/12-sql-homework-demo-01.png)
@@ -82,9 +84,9 @@ You might want to use a separate file that contains functions for performing spe
 You might also want to include a `seeds.sql` file to pre-populate your database, making the development of individual features much easier.
 *Note:* a `db/seeds.sql` file was created and pre-populated with fake data. The staff names include reference to Ralph Alpher, Hans Bethe, and George Gamow, who were actual renowned physicists, witty authors of the so-called `alpha-beta-gamma` (or alphabetical) article in cosmology research. In keeping with the witty spirit of alpha-beta-gamma, my additional seeded and created employees continue to invoke greek alphabet allusions.
 
-## Bonus
+## Current functionality (limits and 'bonus' options)
 
-The functionality of this application is admittedly quite basic in its SQL usage. At a later date, I hope to revisit the application and the SQL material to implement additional functionality which draws upon slightly more advanced multi-table SQL queries. Of the various 'bonus' options suggested, I did, however, manage to include DELETE functions for departments, roles, and employees in the current app.
+The functionality of this application is admittedly quite limited in its SQL usage. At a later date, I hope to revisit the application and the SQL material to implement additional functionality which draws upon slightly more advanced multi-table SQL queries. Of the various 'bonus' options suggested, I did, however, manage to include DELETE functions for departments, roles, and employees in the current app.
 
 ## Review
 

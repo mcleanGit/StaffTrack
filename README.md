@@ -94,11 +94,12 @@ The following items are submitted for review:
 
 * A walkthrough video demonstrating the functionality of the application.
   Link to video walkthrough in README:
-  vimeo link tbd.
+ ![](https://vimeo.com/715050312/e6b7445f4b)
+
 
 * The URL of the GitHub repository, with a unique name and a README describing the project.
   Link to GitHub repo:  
-  https://github.com/mcleanGit/StaffTrack
+  ![](https://github.com/mcleanGit/StaffTrack)
 
 
 - - -
